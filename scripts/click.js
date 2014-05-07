@@ -21,8 +21,8 @@ $( "#save" ).on( "click", function( event ) {
 		d = new Date();
 		d = d.setHours(d.getHours() + 1);
 		localStorage.standUp = d.toString();
-		document.getElementById("standIn").innerHTML = parseInt((d - Date.now()) / min) + " minutes";
-		//startTimer();
+		document.getElementById("standIn").innerHTML = "59 minutes";
+		startTimer();
 	}
 	else
 	{
@@ -56,14 +56,14 @@ function checkDate() {
 }
 
 function startTimer() {
-	//start a timer
-	//wait a minute
-	//update innerHTML of standIn
-	//check if 0 minutes are left...if 0
-		//alert user
-	//else
-		//call startTimer recusively
-		
+	setInterval(function() {
+		alert("STAND UP!");
+		}
+	,hour)
+	setInterval(function() {
+		document.getElementById("standIn").innerHTML = parseInt((d - Date.now()) / min) + " minutes";
+		}	
+	,min)		
 }
 
 function clickCounter() {
