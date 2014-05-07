@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>water counter</title>
+
+    <!-- Bootstrap -->
+    <link href="dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="dist/css/narrowJumbo.css" rel="stylesheet">
+</head>
+<body>
+	<div class="container text-center">
+		<div class="jumbotron hidden" id="water" >
+			<h2>How many glasses of water have you had today?</h2>
+			<div><h1 id="result"></h1></div>
+			<p>
+				<button type="button" class="btn btn-default btn-lg  btn-primary" id="submit">
+					<span class="glyphicon glyphicon-plus"></span>
+				</button>
+			</p>
+		</div>
+		
+		<div class="jumbotron hidden" id="standUp" >
+			<h2>Remind me to stand up once an hour</h2>
+			<div><h1 id="result"></h1></div>
+			<p>
+				stand up in....
+				<span class="label label-danger" id="standIn"></span>
+			</p>
+			
+		</div>
+		
+		<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+		  Choose your options...
+		</button>
+
+		<!-- Modal -->
+		<div class="modal fade text-left" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">Choose your options</h4>
+				</div>
+				<div class="modal-body">
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" id="optionsWater" value="water">
+							A counter and reminder to help you remember to drink 40 oz a day.
+						</label>
+					</div>
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" id="optionsStandUp" value="standUp">
+							A reminder to help you remember to stand up once an hour.
+						</label>
+					</div>
+				</div>
+			
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" id="save" data-dismiss="modal">Save changes</button>
+			</div>
+		  </div>
+		</div>
+	  </div>
+	</div>
+	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<script src="dist/js/bootstrap.min.js"></script>
+	<script src="scripts/click.js"></script>
+</body>
+</html>
