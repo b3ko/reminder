@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>water counter</title>
+    <title>Reminder</title>
 
     <!-- Bootstrap -->
     <link href="dist/css/bootstrap.min.css" rel="stylesheet">
@@ -12,24 +12,44 @@
 </head>
 <body>
 	<div class="container text-center">
-		<div class="jumbotron hidden" id="water" >
+		<div class="jumbotron hidden" id="waterJumbo" >
 			<h2>How many glasses of water have you had today?</h2>
-			<div><h1 id="result"></h1></div>
+			<button type="button" class="btn btn-lg  btn-primary countButton" id="water" value="1" name="totalWater">
+				<span class="glyphicon glyphicon-plus"></span>
+			</button>
+			<div>
+				<h1 id="totalWater"></h1>
+			</div>			
+			</button>
+		</div>
+		
+		<div class="jumbotron hidden" id="standUpJumbo" >
+			<h2>Remind me to stand up once an hour</h2>
 			<p>
-				<button type="button" class="btn btn-default btn-lg  btn-primary" id="submit">
-					<span class="glyphicon glyphicon-plus"></span>
-				</button>
+				stand up in....
+				<span class="label label-danger" id="standUp"></span>
 			</p>
 		</div>
 		
-		<div class="jumbotron hidden" id="standUp" >
-			<h2>Remind me to stand up once an hour</h2>
-			<div><h1 id="result"></h1></div>
+		<div class="jumbotron hidden" id="visionJumbo" >
+			<h2>Stare at something 20 feet away, for 20 seconds, once every 20 minutes</h2>
 			<p>
-				stand up in....
-				<span class="label label-danger" id="standIn"></span>
+				look away in....
+				<span class="label label-danger" id="vision"></span>
 			</p>
-			
+		</div>
+		
+		<div class="jumbotron hidden" id="genCountJumbo" >
+			<h2>count just about anything!</h2>
+			<button type="button" class="btn btn-lg btn-primary countButton" id="less" value="-1" name="totalGenCount">
+				<span class="glyphicon glyphicon-minus"></span>
+			</button>
+			<button type="button" class="btn btn-lg btn-primary countButton" id="more" value="1" name="totalGenCount">
+				<span class="glyphicon glyphicon-plus"></span>
+			</button>
+			<div>
+				<h1 id="totalGenCount"></h1>
+			</div>
 		</div>
 		
 		<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
@@ -47,14 +67,26 @@
 				<div class="modal-body">
 					<div class="checkbox">
 						<label>
-							<input type="checkbox" id="optionsWater" value="water">
+							<input type="checkbox" name="options" id="optionsWater" value="waterJumbo">
 							A counter and reminder to help you remember to drink 40 oz a day.
 						</label>
 					</div>
 					<div class="checkbox">
 						<label>
-							<input type="checkbox" id="optionsStandUp" value="standUp">
+							<input type="checkbox" name="options" id="optionsStandUp" value="standUpJumbo">
 							A reminder to help you remember to stand up once an hour.
+						</label>
+					</div>
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" name="options" id="optionsVision" value="visionJumbo">
+							A reminder to rest your eyes for 20 seconds every 20 minutes.
+						</label>
+					</div>
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" name="options" id="optionsGenCount" value="genCountJumbo">
+							A general counter for all your counting needs.
 						</label>
 					</div>
 				</div>

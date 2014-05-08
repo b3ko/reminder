@@ -1,104 +1,100 @@
+/*TO DO:
+	fix broken alert function so the page updates
+	reimplement the date check so the counters go back to 0 in the morning (maybe not for genCOunter
+	add clearIntervals so the reminders don't pop up if they click the +
+	testing
+*/
+
+//milli to time units:
 var min = 60 * 1000;
 var hour = 60 * min;
-
-$( "#submit" ).on( "click", function( event ) {
-  clickCounter();
-});
-
-$( "#save" ).on( "click", function( event ) {
-	if (document.getElementById("optionsWater").checked)
+//arrays with option types:
+var optionsCounters = ["totalGenCount","totalWater"];
+var alertObj =[
+	vision = {name: "vision", time:20, message:"Take a break,\nfor your eyes' sake!"},
+	standUp = {name: "standUp", time:60, message:"Get up, stand up.\nIts good for your life."}
+];
+var optionsAlerts = ["standUp","vision"];
+		
+function storeValues(optionArray, val) {
+	if(typeof(Storage)!=="undefined") //does browser support local storage (and cookies are on)
 	{
-		document.getElementById("water").className = "jumbotron";
-	}
-	else
-	{
-		document.getElementById("water").className = "jumbotron hidden";
-	}
-	
-	if (document.getElementById("optionsStandUp").checked)
-	{
-		document.getElementById("standUp").className = "jumbotron";
-		d = new Date();
-		d = d.setHours(d.getHours() + 1);
-		localStorage.standUp = d.toString();
-		document.getElementById("standIn").innerHTML = "59 minutes";
-		startTimer();
-	}
-	else
-	{
-		document.getElementById("standUp").className = "jumbotron hidden";
-	}
-});
-
-checkDate();
-document.getElementById("result").innerHTML=localStorage.clickcount;
-
-alertFlag = setTimeout(function(){showAlert()}, hour);
-
-function checkDate() {
-	var d = new Date();
-	d.setHours(0);
-	d.setMinutes(0);
-	d.setSeconds(0);
-	d.setMilliseconds(0);
-	var lsLastVisit = new Date(Date.parse(localStorage.lastVisit));
-	if(lsLastVisit < d)
-	{
-		localStorage.clickcount=0;
-	}
-	
-	if(!localStorage.clickcount)
-	{
-		localStorage.clickcount = 0;
-	}
-	
-	localStorage.lastVisit = new Date().toString();
-}
-
-function startTimer() {
-	setInterval(function() {
-		alert("STAND UP!");
-		}
-	,hour)
-	setInterval(function() {
-		document.getElementById("standIn").innerHTML = parseInt((d - Date.now()) / min) + " minutes";
-		}	
-	,min)		
-}
-
-function clickCounter() {
-	if(typeof(Storage)!=="undefined")
-	{
-		checkDate();
-		if (localStorage.clickcount)
+		for(i=0;i<optionArray.length;i++)
 		{
-			localStorage.clickcount=Number(localStorage.clickcount)+1;
+			if(!localStorage[optionArray[i]]) //does the options exist in local storage?
+			{
+				localStorage[optionArray[i]] = val; //doesn't exist so set to value passed in
+			}
+		}	
+	}
+	else //no support/cookies
+	{
+		alert("your browser doesn't support local storage...");//document.getElementById("alert").innerHTML="Sorry, your browser does not support web storage...";
+	}
+}
+
+//update the page with values from local
+function updateDisplay(optionArray) {
+	for(i=0;i<optionArray.length;i++)
+	{
+		document.getElementById(optionArray[i]).innerHTML=localStorage[optionArray[i]];
+	}	
+}
+
+//set the alerts
+//TO DO: add if statements so only options that are checked get alerts.
+function initAlerts(optionArray) {
+	for (i=0;i<optionArray.length;i++)
+	{
+		document.getElementById(optionArray[i].name).innerHTML = optionArray[i].time + " minutes";
+		startTimer(optionArray[i]);
+	}
+}
+
+//general method for incrementing (and decrementing) all counters
+$(".countButton" ).on( "click", function( event ) {
+	if(!localStorage[this.name.toString()])
+	{
+		localStorage[this.name.toString()] = this.value;
+		document.getElementById(this.name).innerHTML = this.value;
+	}
+	else
+	{
+		localStorage[this.name.toString()] = Number(localStorage[this.name.toString()]) + Number(this.value);
+		document.getElementById(this.name).innerHTML = localStorage[this.name.toString()];
+	}
+});
+
+//when user chooses options show the checked ones and leave the rest hidden
+$( "#save" ).on( "click", function( event ) {
+	var opts = document.getElementsByName("options");
+	for (i=0; i < opts.length; i++){		
+		localStorage[opts[i].id.toString()] = opts[i].checked;
+		if (document.getElementById(opts[i].id).checked)
+		{
+			document.getElementById(opts[i].value).className = "jumbotron";
 		}
 		else
 		{
-			localStorage.clickcount=1;
+			document.getElementById(opts[i].value).className = "jumbotron hidden";
 		}
-		
-		document.getElementById("result").innerHTML=localStorage.clickcount;
-		localStorage.lastVisit = new Date().toString();
-		clearTimeout(alertFlag);
-		alertFlag = setTimeout(function(){showAlert()}, hour);
 	}
-	else
-	{
-		document.getElementById("result").innerHTML="Sorry, your browser does not support web storage...";
-	}
-}
+	//init local storage and update values in page
+	storeValues(optionsCounters, 0);
+	storeValues(optionsAlerts, new Date().getTime());
+	updateDisplay(optionsCounters);
+	initAlerts(alertObj);
+	
+});
 
-function showAlert(){
-	if(confirm("Drink some water!\nDo you want another reminder in 10 minutes?"))
-	{
-		clearTimeout(alertFlag);
-		alertFlag = setTimeout(function(){showAlert()}, (10 * min));
-	}
-	else
-	{
-		clearTimeout(alertFlag);
-		alert("OK. Reminders are turned off until you refresh the page.");
-	}
+function startTimer(alertObj) {
+	setInterval(function() {
+		alert(alertObj.message);
+		}
+	,(alertObj.time * min))
+	setInterval(function() {
+	//FIX THIS BROKEN POS. too tired to think. will fix in morning
+		document.getElementById(alertObj.name).innerHTML = Math.floor((Number(localStorage[alertObj.name]) / min) - ((new Date().getTime() / min) - (alertObj.time))) + " minutes";
+		}	
+	,min)		
 }
