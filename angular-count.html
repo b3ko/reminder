@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Reminder</title>
+
+    <!-- Bootstrap -->
+    <link href="dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="dist/css/narrowJumbo.css" rel="stylesheet">
+</head>
+<body>
+
+	<div ng-controller="OptionsCtrl">
+
+		<div class="container">
+			<h3>Choose your reminders:</h3>
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" ng-model="drink">
+					A counter and reminder to help you remember to drink 40 oz a day.
+				</label>
+			</div>
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" ng-model="stand">
+					A reminder to help you remember to stand up once an hour.
+				</label>
+			</div>
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" ng-model="eyes">
+					A reminder to rest your eyes for 20 seconds every 20 minutes.
+				</label>
+			</div>
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" ng-model="anything">
+					A general counter for all your counting needs.
+				</label>
+			</div>
+		</div>
+
+		<div class="container text-center">
+			<div class="jumbotron" ng-show="drink" ng-controller="DrinkCtrl">
+				<h2>How many ounces of water have you had to drink? <small>Shoot for 40 oz</small></h2>
+
+				<div>
+					<progressbar animate="true" value="ounces" type="{{ounces|drink}}" max="40"><b>{{ounces}}</b></progressbar>
+				</div>
+
+				<button type="button" class="btn btn-lg  btn-primary countButton" ng-click="add()">
+					<span class="glyphicon glyphicon-plus"></span>
+				</button>
+
+				<div>
+					<h1>Total Water: {{ounces}}</h1>
+				</div>	
+
+			</div>
+			
+			<div class="jumbotron" ng-show="stand" ng-controller="StandUpCtrl">
+				<alert ng-show="{{}}" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+				<h2>Remind me to stand up once an hour</h2>
+				<p>
+					stand up in....
+					<span class="label label-danger" id="standUp"></span>
+				</p>
+				<div>
+					<progressbar animate="false" value="lastStood" type="{{lastStood|type}}"><b>{{lastStood}}%</b></progressbar>
+				</div>
+
+				<button type="button" class="btn btn-lg  btn-primary countButton" ng-click="StandReset()">
+					<span class="glyphicon glyphicon-plus"></span>
+				</button>
+			</div>
+			
+			<div class="jumbotron" ng-show="eyes" ng-controller="RestEyesCtrl">
+				<h2>Stare at something 20 feet away, for 20 seconds, once every 20 minutes</h2>
+				<p>
+					look away in....
+					<span class="label label-danger" id="vision"></span>
+				</p>
+				<div>
+					<progressbar animate="false" value="restedEyes" type="{{restedEyes|type}}"><b>{{restedEyes}}%</b></progressbar>
+				</div>
+
+				<button type="button" class="btn btn-lg  btn-primary countButton" ng-click="EyesReset()">
+					<span class="glyphicon glyphicon-plus"></span>
+				</button>
+			</div>
+			
+			<div class="jumbotron" ng-show="anything">
+				<h2>count just about anything!</h2>
+				<button type="button" class="btn btn-lg btn-primary countButton" id="less" value="-1" name="totalGenCount">
+					<span class="glyphicon glyphicon-minus"></span>
+				</button>
+				<button type="button" class="btn btn-lg btn-primary countButton" id="more" value="1" name="totalGenCount">
+					<span class="glyphicon glyphicon-plus"></span>
+				</button>
+				<div>
+					<h1 id="totalGenCount"></h1>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	
+	<script src="bower_components/angular/angular.js"></script>
+	<script src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>
+	<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+	<script src="scripts/angular-click.js"></script>
+</body>
+</html>
